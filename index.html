@@ -3,45 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Heartbeat Insights</title>
-
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <style>
+        body {background-color: #E3DCCA;}
+    </style>
     <nav>
-        <a href="index.html" style="text-decoration: none"><img src="images\home.png" style="width: 1%">Home    </a>
-        <a href="#about-us" style="text-decoration: none"><img src="images\about.png" style="width: 1%">About the Project    </a>
-        <a href="#features" style="text-decoration: none"><img src="images\analysis.png" style="width: 1%">Analysis    </a>
-        <a href="#contact" style="text-decoration: none"><img src="images\contact.png" style="width: 1%"> Contact    </a>
-        <a href="login.html" style="text-decoration: none"><img src="images\heart.png" style="width: 1%"> Login</a>    
+        <a href="index.html" style="text-decoration: none"><i class="bi bi-house-heart-fill"></i></i>    Home    </a>
+        <a href="#about-us" style="text-decoration: none"><i class="bi bi-search-heart"></i>    About the Project    </a>
+        <a href="#features" style="text-decoration: none"><i class="bi bi-clipboard2-heart-fill"></i>    Analysis    </a>
+        <a href="#contact" style="text-decoration: none"><i class="bi bi-envelope-paper-heart"></i>    Contact    </a>
+        <a href="login.html" style="text-decoration: none"><i class="glyphicon glyphicon-user"></i>    Login</a>    
     </nav>
-
+</head>
+<body>
     <div>
     <section id="about-us">
         <h4>About </h4>
-        <p>This will be a very nice website...</p>
-        <img src="https://cdn.pixabay.com/animation/2024/02/01/07/48/07-48-16-574_512.gif" width="80" height="80">
+        <p class="paragrafo-about">This will be a very nice website...</p>
+        <img src="images\people.jpg" class="img_responsiva">
     </section>
     </div>
-    
     <div>
     <section id="features">
         <h4>Features</h4>
-        <p>No features yet... Wait, take deep breaths and listen to a heart beat...</p>
-        <iframe width="150" height="150" src="https://www.youtube.com/embed/I9E2jshhEiE?si=RAhZwSHghsmrPx4y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <p class="paragrafo">No features yet... Wait, take deep breaths and listen to a heart beat...</p>
+        <img src="images\laptop.jpg">
     </section>
     </div>
 
     <div>
     <section id="contact">
         <h4>Contact</h4>
-        <p>Click below to contact us!</p>
+        <p class="paragrafo">Click below to contact us!</p>
         <a href="mailto:ltcagodoi@gmail.com"><img width="80" height="80" src="images\email.png" style="width: 90px; height: 90px;"></a>
     </section>
     </div>
 
-    <footer>
+    <footer class="footer">
         <p>2025 Heartbeat Insights. Desenvolvido na disciplina de Tópicos Especiais em Programação 3.</p>
     </footer>
-</head>
-<body>
-    
     
 </body>
 </html>

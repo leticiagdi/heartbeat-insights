@@ -1,0 +1,27 @@
+
+
+.paragrafo, .footer {
+    font-size: 15px;
+}
+
+@media (max-width: 600px) { 
+    .paragrafo-about {
+        font-size: 11px;
+        color: red;
+    } 
+
+    .paragrafo, .footer {
+        font-size: 11px;
+    }
+
+    .formulario, label {
+        font-size: 1em;
+    }
+
+}
+
+.img_responsiva {
+    max-width: 100%;
+    height: auto;
+}
+
