@@ -242,30 +242,3 @@ curl -H "Authorization: Bearer {seu_token}" \
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 👥 Equipe
-
-- **Desenvolvedor Principal** - [Seu Nome](https://github.com/seu-usuario)
-- **Arquitetura e ML** - Especialista em análise de dados cardiovasculares
-
-## 📞 Contato
-
-- 📧 Email: seu.email@exemplo.com
-- 🐙 GitHub: [@seu-usuario](https://github.com/seu-usuario)
-- 💼 LinkedIn: [Seu Nome](https://linkedin.com/in/seu-perfil)
-
----
-
-<div align="center">
-
-**💓 Heartbeat Insights - Transformando dados em saúde**
-
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-6+-brightgreen.svg)](https://mongodb.com/)
-[![React](https://img.shields.io/badge/React-19-blue.svg)](https://reactjs.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-</div>
