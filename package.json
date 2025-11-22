@@ -8,10 +8,13 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "nodemon src/server/index.js"
+    "server": "nodemon src/server/index.js",
+    "frontend": "node front/server.js",
+    "start": "concurrently \"npm run server\" \"npm run frontend\""
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
