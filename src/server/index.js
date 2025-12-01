@@ -37,7 +37,15 @@ const connectDB = async () => {
 connectDB(); 
 
 // --- 2. middlewares ---
-app.use(cors()); // Permite requisições de outras origens (frontend)
+// Configuração de CORS
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions)); // Permite requisições de origens específicas
 app.use(express.json()); // Para parsear o body das requisições como JSON
 
 // --- 3. rotas da aplicacao ---
