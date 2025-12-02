@@ -1,0 +1,76 @@
+.skeleton-item {
+    animation: none;
+    opacity: 1;
+}
+
+.skeleton-title {
+    height: 32px;
+    background: linear-gradient(90deg, #e2e8f0 25%, #f7fafc 50%, #e2e8f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: 200px;
+}
+
+.skeleton-button {
+    height: 44px;
+    background: linear-gradient(90deg, #e2e8f0 25%, #f7fafc 50%, #e2e8f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    width: 150px;
+}
+
+.skeleton-button-small {
+    height: 36px;
+    background: linear-gradient(90deg, #e2e8f0 25%, #f7fafc 50%, #e2e8f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 8px;
+    width: 80px;
+}
+
+.skeleton-text {
+    background: linear-gradient(90deg, #e2e8f0 25%, #f7fafc 50%, #e2e8f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.skeleton-text-lg {
+    height: 20px;
+    width: 100%;
+}
+
+.skeleton-text-md {
+    height: 16px;
+    width: 90%;
+}
+
+.skeleton-text-sm {
+    height: 12px;
+    width: 60%;
+}
+
+.skeleton-badge {
+    height: 24px;
+    width: 80px;
+    background: linear-gradient(90deg, #e2e8f0 25%, #f7fafc 50%, #e2e8f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 12px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}

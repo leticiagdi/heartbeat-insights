@@ -1,0 +1,66 @@
+.login-container .card {
+    width: 500px;
+}
+
+.login-container h1 {
+    text-align: center;
+    color: #667eea;
+    margin-bottom: 30px;
+    font-size: 2em;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-weight: 600;
+    color: #a0aec0;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.tab-btn.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+}
+
+.tab-btn:focus {
+    outline: none;
+}
+
+.tab-btn:hover {
+    color: #667eea;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form input {
+    background-color: #e2e8f0;
+}
+
+.form select {
+    background-color: #e2e8f0;
+    color: #4a5568;
+}
+
+.form h2 {
+    color: #4a5568;
+    margin-bottom: 20px;
+    border: none;
+    padding: 0;
+    font-size: 1.5em;
+}
