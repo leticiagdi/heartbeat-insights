@@ -54,7 +54,7 @@ export function LoginPage({ onLoginSuccess }) {
   return (
     <div className="login-container">
       <div className="card">
-        <h1>💓 Heartbeat Insights</h1>
+        <h1>Heartbeat Insights</h1>
 
         <div className="tabs">
           <button

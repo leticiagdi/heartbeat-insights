@@ -29,7 +29,7 @@ export function AppLayout({ children }) {
         )}
       </div>
       <header className="app-header">
-        <h1>💓 Heartbeat Insights</h1>
+        <h1>Heartbeat Insights</h1>
         <p>Plataforma de Análise Cardiovascular</p>
       </header>
 

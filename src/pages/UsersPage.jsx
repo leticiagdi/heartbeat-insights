@@ -36,33 +36,28 @@ export function UsersPage() {
 
   if (!isAdmin) {
     return (
-      <div className="container">
-        <section className="section">
-          <div className="card">
-            <p>Acesso negado. Apenas administradores podem acessar esta página.</p>
-          </div>
-        </section>
+      <div className="section">
+        <div className="card">
+          <p>Acesso negado. Apenas administradores podem acessar esta página.</p>
+        </div>
       </div>
     );
   }
 
   if (loading) {
     return (
-      <div className="container">
-        <section className="section">
-          <div className="card">
-            <p>Carregando usuários...</p>
-          </div>
-        </section>
+      <div className="section">
+        <div className="card">
+          <p>Carregando usuários...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container" style={{ padding: 0, width: '100%' }}>
-      <section className="section">
-        <div className="card">
-          <h2>Usuários</h2>
+    <div className="section">
+      <div className="card">
+        <h2>👥 Usuários</h2>
           
           {error && <div className="message error">{error}</div>}
 
@@ -86,8 +81,7 @@ export function UsersPage() {
               ))}
             </div>
           )}
-        </div>
-      </section>
+      </div>
     </div>
   );
 }

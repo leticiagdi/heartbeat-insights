@@ -1,66 +1,144 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: var(--color-background);
+}
+
 .login-container .card {
-    width: 500px;
+  width: 100%;
+  max-width: 450px;
+  background: var(--color-surface);
+  border: none;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 }
 
 .login-container h1 {
-    text-align: center;
-    color: #667eea;
-    margin-bottom: 30px;
-    font-size: 2em;
+  text-align: center;
+  color: var(--color-primary);
+  margin-bottom: 30px;
+  font-size: 2.25rem;
+  font-weight: 700;
 }
 
 .tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #e2e8f0;
+  display: flex;
+  gap: 0;
+  margin-bottom: 25px;
+  border-bottom: 2px solid var(--color-border);
+  border-radius: 0;
 }
 
 .tab-btn {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    font-weight: 600;
-    color: #a0aec0;
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s ease;
-    font-size: 16px;
+  flex: 1;
+  padding: 14px 16px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.tab-btn:first-child {
+  border-radius: 0;
+}
+
+.tab-btn:last-child {
+  border-radius: 0;
 }
 
 .tab-btn.active {
-    color: #667eea;
-    border-bottom-color: #667eea;
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.tab-btn:hover:not(.active) {
+  color: var(--color-primary);
+  background: var(--color-primary-light);
 }
 
 .tab-btn:focus {
-    outline: none;
-}
-
-.tab-btn:hover {
-    color: #667eea;
+  outline: none;
 }
 
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .form input {
-    background-color: #e2e8f0;
+  background-color: var(--color-background);
+  color: var(--color-text-main);
 }
 
 .form select {
-    background-color: #e2e8f0;
-    color: #4a5568;
+  background-color: var(--color-background);
+  color: var(--color-text-main);
 }
 
 .form h2 {
-    color: #4a5568;
+  color: var(--color-text-main);
+  margin-bottom: 15px;
+  border: none;
+  padding: 0;
+  font-size: 1.25rem;
+  margin-top: 10px;
+}
+
+.form h2:first-child {
+  margin-top: 0;
+}
+
+.form .btn-primary {
+  margin-top: 5px;
+}
+
+.divider {
+  text-align: center;
+  color: var(--color-text-muted);
+  margin: 20px 0;
+  position: relative;
+  font-size: 0.85rem;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.divider span {
+  background: var(--color-surface);
+  padding: 0 10px;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 640px) {
+  .login-container .card {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .login-container h1 {
+    font-size: 1.75rem;
     margin-bottom: 20px;
-    border: none;
-    padding: 0;
-    font-size: 1.5em;
+  }
+
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 12px 12px;
+  }
 }
