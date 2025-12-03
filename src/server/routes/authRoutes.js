@@ -124,7 +124,96 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// @route   GET /api/auth/users
+// @desc    Listar todos os usuários (apenas admin)
+// @access  Private/Admin
+router.get('/users', protect, adminOnly, async (req, res) => {
+    try {
+        const users = await User.find().select('-password');
+        res.json({
+            users,
+            count: users.length
+        });
+    } catch (error) {
+        console.error('Erro ao buscar usuários:', error.message);
+        res.status(500).json({ message: 'Erro no servidor' });
+    }
+});
 
+// @route   PUT /api/auth/users/:id
+// @desc    Editar usuário (apenas admin)
+// @access  Private/Admin
+router.put('/users/:id', protect, adminOnly, async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const { name, email, role } = req.body;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        if (email && email !== user.email) {
+            const emailExists = await User.findOne({ email });
+            if (emailExists) {
+                return res.status(400).json({ message: 'Email já está em uso' });
+            }
+        }
+
+        if (name) user.name = name;
+        if (email) user.email = email;
+        if (role) user.role = role;
+
+        await user.save();
+
+        res.json({
+            message: 'Usuário atualizado com sucesso',
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao atualizar usuário:', error.message);
+        res.status(500).json({ message: 'Erro no servidor' });
+    }
+});
+
+// @route   DELETE /api/auth/users/:id
+// @desc    Excluir usuário (apenas admin)
+// @access  Private/Admin
+router.delete('/users/:id', protect, adminOnly, async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        if (userId === req.user._id.toString()) {
+            return res.status(400).json({ message: 'Você não pode excluir sua própria conta' });
+        }
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        await User.findByIdAndDelete(userId);
+
+        res.json({
+            message: 'Usuário excluído com sucesso',
+            deletedUser: {
+                _id: user._id,
+                name: user.name,
+                email: user.email
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao excluir usuário:', error.message);
+        res.status(500).json({ message: 'Erro no servidor' });
+    }
+});
 
 // Exporta o router e os middlewares
 export { protect, adminOnly };
