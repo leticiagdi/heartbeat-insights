@@ -9,6 +9,7 @@ import '../styles/dashboard.css';
 export function DashboardPage() {
   const { isAdmin, authToken } = useAuth();
   const [dashboards, setDashboards] = useState([]);
+  const [temporaryDashboards, setTemporaryDashboards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -82,6 +83,19 @@ export function DashboardPage() {
     });
   };
 
+  const handleGenerateHealthDashboards = async () => {
+    if (!confirm('Isso vai gerar 5 dashboards TEMPORÁRIOS com dados REAIS. Continuar?')) return;
+
+    const result = await api.post('/analytics/generate-health-dashboards');
+
+    if (result.ok) {
+      setTemporaryDashboards(result.data.dashboards);
+      alert(`✅ ${result.data.dashboards.length} dashboards temporários gerados! (Não salvos no banco)`);
+    } else {
+      alert(result.error || 'Erro ao gerar dashboards');
+    }
+  };
+
   if (loading) {
     return <DashboardSkeleton />;
   }
@@ -99,20 +113,36 @@ export function DashboardPage() {
             >
               + Criar Dashboard
             </button>
+            <button
+              onClick={handleGenerateHealthDashboards}
+              className="btn-secondary"
+              style={{ marginLeft: '10px' }}
+            >
+              🌍 Gerar Dashboards API Real
+            </button>
           </div>
         )}
 
         {error && <div className="message error">{error}</div>}
 
-        {dashboards.length === 0 ? (
+        {temporaryDashboards.length > 0 && (
+          <div className="message info" style={{ marginBottom: '20px' }}>
+            ℹ️ {temporaryDashboards.length} dashboards temporários da API carregados (serão removidos ao sair)
+          </div>
+        )}
+
+        {dashboards.length === 0 && temporaryDashboards.length === 0 ? (
           <p>Nenhum dashboard encontrado.</p>
         ) : (
           <>
             <div className="dashboards-list">
-              {dashboards.map((dashboard) => (
+              {[...temporaryDashboards, ...dashboards].map((dashboard) => (
                 <div key={dashboard._id} className="dashboard-item">
                   <div className="dashboard-header">
                     <h4>{dashboard.title}</h4>
+                    {dashboard.isExternalData && (
+                      <span className="badge badge-api">API Real</span>
+                    )}
                   </div>
                   <p>{dashboard.description}</p>
                   <small>
@@ -127,7 +157,14 @@ export function DashboardPage() {
                         📊 Ver Gráfico
                       </button>
                     )}
-                    {isAdmin && (
+                    {dashboard.isTemporary ? (
+                      <button
+                        onClick={() => setTemporaryDashboards(prev => prev.filter(d => d._id !== dashboard._id))}
+                        className="btn-danger"
+                      >
+                        Remover
+                      </button>
+                    ) : isAdmin && (
                       <button
                         onClick={() => handleDeleteDashboard(dashboard._id)}
                         className="btn-danger"

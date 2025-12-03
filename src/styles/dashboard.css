@@ -38,6 +38,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+  gap: 10px;
 }
 
 .dashboard-header h4,
@@ -45,6 +46,22 @@
   margin: 0;
   color: var(--color-text-main);
   font-size: 1.1rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-api {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2);
 }
 
 .dashboard-item p,

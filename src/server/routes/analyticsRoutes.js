@@ -1,8 +1,9 @@
 // routes/analyticsRoutes.js
 import express from 'express';
-import { protect, adminOnly } from './authRoutes.js'; 
+import { protect, adminOnly } from './authRoutes.js';
 import Dashboard from '../models/dashboardModel.js';
 import Insight from '../models/insightModel.js';
+import { generateHealthDashboards, getGlobalHealthData } from '../services/healthDataService.js';
 
 const router = express.Router();// --- Endpoints de Dados e Análise ---
 
@@ -451,6 +452,49 @@ router.post('/generate-sample-dashboard', protect, adminOnly, async (req, res) =
   } catch (error) {
     console.error('Erro ao gerar dashboard:', error);
     res.status(400).json({ error: error.message });
+  }
+});
+
+// @route   POST /api/analytics/generate-health-dashboards
+// @desc    Gera dashboards temporários com dados reais de saúde pública (Disease.sh API)
+// @access  Private/Admin
+router.post('/generate-health-dashboards', protect, adminOnly, async (req, res) => {
+  try {
+    const healthResult = await generateHealthDashboards();
+
+    const temporaryDashboards = healthResult.dashboards.map((dash, index) => ({
+      _id: `temp-${Date.now()}-${index}`,
+      title: dash.title,
+      description: dash.description,
+      data: dash.data,
+      isExternalData: dash.isExternalData,
+      dataSource: dash.dataSource,
+      createdAt: new Date().toISOString(),
+      isTemporary: true
+    }));
+
+    res.status(200).json({
+      message: `${temporaryDashboards.length} dashboards temporários gerados`,
+      dashboards: temporaryDashboards,
+      metadata: healthResult.metadata,
+      summary: healthResult.summary
+    });
+  } catch (error) {
+    console.error('Erro ao gerar dashboards de saúde:', error.message);
+    res.status(500).json({ message: 'Erro ao gerar dashboards de saúde' });
+  }
+});
+
+// @route   GET /api/analytics/health-data
+// @desc    Busca dados globais de saúde pública (Disease.sh API)
+// @access  Private
+router.get('/health-data', protect, async (req, res) => {
+  try {
+    const healthData = await getGlobalHealthData();
+    res.json(healthData);
+  } catch (error) {
+    console.error('Erro ao buscar dados de saúde:', error.message);
+    res.status(500).json({ message: 'Erro ao buscar dados de saúde' });
   }
 });
 
