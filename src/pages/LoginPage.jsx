@@ -5,7 +5,7 @@ import '../styles/login.css';
 
 export function LoginPage({ onLoginSuccess }) {
   const { login } = useAuth();
-  const [activeTab, setActiveTab] = useState('login'); // 'login' ou 'register'
+  const [activeTab, setActiveTab] = useState('login');
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
 
@@ -15,7 +15,6 @@ export function LoginPage({ onLoginSuccess }) {
     setTimeout(() => setMessage(''), 5000);
   };
 
-  // Handle Login
   const handleLogin = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -32,7 +31,6 @@ export function LoginPage({ onLoginSuccess }) {
     }
   };
 
-  // Handle Register
   const handleRegister = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;

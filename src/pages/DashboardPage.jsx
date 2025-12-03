@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../api';
 import { DashboardSkeleton } from '../components/SkeletonLoader';
+import { ChartModal } from '../components/ChartModal';
+import { chartExamples } from '../utils/chartExamples';
 import '../styles/dashboard.css';
 
 export function DashboardPage() {
@@ -10,6 +12,7 @@ export function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showChartModal, setShowChartModal] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -70,6 +73,15 @@ export function DashboardPage() {
     }
   };
 
+  const handleFillExample = (chartType) => {
+    const example = chartExamples[chartType];
+    setFormData({
+      title: example.title,
+      description: `Exemplo de gráfico ${chartType}`,
+      data: JSON.stringify(example, null, 2)
+    });
+  };
+
   if (loading) {
     return <DashboardSkeleton />;
   }
@@ -95,32 +107,48 @@ export function DashboardPage() {
         {dashboards.length === 0 ? (
           <p>Nenhum dashboard encontrado.</p>
         ) : (
-          <div className="dashboards-list">
-            {dashboards.map((dashboard) => (
-              <div key={dashboard._id} className="dashboard-item">
-                <div className="dashboard-header">
-                  <h4>{dashboard.title}</h4>
-                </div>
-                <p>{dashboard.description}</p>
-                <small>
-                  Criado: {new Date(dashboard.createdAt).toLocaleDateString('pt-BR')}
-                </small>
-                {isAdmin && (
-                  <div className="dashboard-actions">
-                    <button
-                      onClick={() => handleDeleteDashboard(dashboard._id)}
-                      className="btn-danger"
-                    >
-                      Excluir
-                    </button>
+          <>
+            <div className="dashboards-list">
+              {dashboards.map((dashboard) => (
+                <div key={dashboard._id} className="dashboard-item">
+                  <div className="dashboard-header">
+                    <h4>{dashboard.title}</h4>
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
+                  <p>{dashboard.description}</p>
+                  <small>
+                    Criado: {new Date(dashboard.createdAt).toLocaleDateString('pt-BR')}
+                  </small>
+                  <div className="dashboard-actions">
+                    {dashboard.data && (
+                      <button
+                        onClick={() => setShowChartModal(dashboard)}
+                        className="btn-secondary"
+                      >
+                        📊 Ver Gráfico
+                      </button>
+                    )}
+                    {isAdmin && (
+                      <button
+                        onClick={() => handleDeleteDashboard(dashboard._id)}
+                        className="btn-danger"
+                      >
+                        Excluir
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
 
-        {/* Modal de Criar Dashboard */}
+        {showChartModal && (
+          <ChartModal 
+            dashboard={showChartModal} 
+            onClose={() => setShowChartModal(null)} 
+          />
+        )}
+
         {showCreateModal && (
           <div className="modal show">
             <div className="modal-content">
@@ -149,14 +177,34 @@ export function DashboardPage() {
                   }
                   required
                 />
+                <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '10px' }}>
+                  <strong>Exemplos rápidos:</strong>
+                  <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
+                    <button type="button" onClick={() => handleFillExample('pie')} className="btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                      📊 Pizza
+                    </button>
+                    <button type="button" onClick={() => handleFillExample('doughnut')} className="btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                      🍩 Donut
+                    </button>
+                    <button type="button" onClick={() => handleFillExample('bar')} className="btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                      📈 Barra
+                    </button>
+                    <button type="button" onClick={() => handleFillExample('line')} className="btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                      📉 Linha
+                    </button>
+                    <button type="button" onClick={() => handleFillExample('scatter')} className="btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                      🔵 Dispersão
+                    </button>
+                  </div>
+                </div>
                 <textarea
-                  placeholder={'JSON válido:\n{"campo": "valor"}'}
+                  placeholder={'JSON válido:\n{"type":"pie","title":"...","labels":[...],"data":[...]}'}
                   value={formData.data}
                   onChange={(e) =>
                     setFormData({ ...formData, data: e.target.value })
                   }
                   required
-                  rows="8"
+                  rows="10"
                 />
                 <div className="modal-buttons">
                   <button type="submit" className="btn-primary">

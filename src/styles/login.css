@@ -27,7 +27,6 @@
   display: flex;
   gap: 0;
   margin-bottom: 25px;
-  border-bottom: 2px solid var(--color-border);
   border-radius: 0;
 }
 
@@ -39,18 +38,19 @@
   cursor: pointer;
   font-weight: 600;
   color: var(--color-text-muted);
-  border-bottom: 3px solid transparent;
   margin-bottom: -2px;
   transition: all 0.2s ease;
   font-size: 0.95rem;
 }
 
 .tab-btn:first-child {
-  border-radius: 0;
+  border-radius: 8px 0 0 8px;
+  border-bottom: 2px solid var(--color-border);
 }
 
 .tab-btn:last-child {
-  border-radius: 0;
+  border-radius: 0 8px 8px 0;
+  border-bottom: 2px solid var(--color-border);
 }
 
 .tab-btn.active {
