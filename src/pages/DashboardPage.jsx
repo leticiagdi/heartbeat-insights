@@ -103,7 +103,7 @@ export function DashboardPage() {
   return (
     <div className="section">
       <div className="card">
-        <h2>🫀 Dashboards</h2>
+        <h2>Dashboards</h2>
 
         {isAdmin && (
           <div className="dashboard-options">
