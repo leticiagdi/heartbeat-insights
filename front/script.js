@@ -1,6 +1,6 @@
 // -*- coding: utf-8 -*-
 // configuracao da api
-const API_BASE = 'http://localhost:5000';
+const API_BASE = 'http://localhost:5001';
 let currentUser = null;
 let authToken = null;
 
