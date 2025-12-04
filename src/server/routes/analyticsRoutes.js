@@ -129,28 +129,62 @@ router.get('/dashboard/:id', protect, async (req, res) => {
 // @route   POST /api/analytics/insights
 // @desc    admin cria novo insight (action item)
 // @access  Private/Admin
+// router.post('/insights', protect, adminOnly, async (req, res) => {
+//     try {
+//         const { title, content, type, priority, dashboardId } = req.body;
+        
+//         const newInsight = await Insight.create({
+//             title,
+//             content,
+//             type,
+//             priority,
+//             dashboardId,
+//             createdBy: req.user._id
+//         });
+        
+//         res.status(201).json({
+//             message: 'Insight criado com sucesso',
+//             insight: newInsight
+//         });
+//     } catch (error) {
+//         console.error('Erro ao criar insight:', error.message);
+//         res.status(400).json({ 
+//             message: 'Erro ao criar insight', 
+//             error: error.message 
+//         });
+//     }
+// });
 router.post('/insights', protect, adminOnly, async (req, res) => {
     try {
-        const { title, content, type, priority, dashboardId } = req.body;
-        
-        const newInsight = await Insight.create({
-            title,
+        const { 
+            title, 
             content,
-            type,
-            priority,
-            dashboardId,
-            createdBy: req.user._id
-        });
-        
-        res.status(201).json({
-            message: 'Insight criado com sucesso',
-            insight: newInsight
-        });
-    } catch (error) {
-        console.error('Erro ao criar insight:', error.message);
-        res.status(400).json({ 
-            message: 'Erro ao criar insight', 
-            error: error.message 
+            type, 
+            priority, 
+            dashboardId, 
+            ...otherFields
+        } = req.body;
+
+    const newInsight = await Insight.create({
+        title,
+        content,
+        type,
+        priority,
+        dashboardId,
+        createdBy: req.user._id, 
+        ...otherFields
+});
+
+    res.status(201).json({
+    message: 'Insight criado com sucesso',
+    insight: newInsight
+});
+}
+    catch (error) {
+    console.error('Erro ao criar insight:', error.message);
+    res.status(400).json({ 
+        message: 'Erro de validação do Insight', 
+        error: error.message 
         });
     }
 });
@@ -263,26 +297,26 @@ router.post('/predict', protect, async (req, res) => {
 // @route   POST /api/analytics/insights
 // @desc    admin insere insights processados (ex: do google colab)
 // @access  Private/Admin
-router.post('/insights', protect, adminOnly, async (req, res) => {
-    try {
-        const newInsight = await Insight.create({
-            ...req.body,
-            uploadedBy: req.user._id,
-            metadata: {
-                ...req.body.metadata,
-                processedAt: new Date()
-            }
-        });
+// router.post('/insights', protect, adminOnly, async (req, res) => {
+//     try {
+//         const newInsight = await Insight.create({
+//             ...req.body,
+//             uploadedBy: req.user._id,
+//             metadata: {
+//                 ...req.body.metadata,
+//                 processedAt: new Date()
+//             }
+//         });
 
-        res.status(201).json({
-            message: 'Insight salvo com sucesso',
-            insight: newInsight
-        });
-    } catch (error) {
-        console.error('Erro ao salvar insight:', error.message);
-        res.status(400).json({ message: 'Erro ao salvar insight' });
-    }
-});
+//         res.status(201).json({
+//             message: 'Insight salvo com sucesso',
+//             insight: newInsight
+//         });
+//     } catch (error) {
+//         console.error('Erro ao salvar insight:', error.message);
+//         res.status(400).json({ message: 'Erro ao salvar insight' });
+//     }
+// });
 
 // @route   GET /api/analytics/insights/:category
 // @desc    Obtém insights por categoria

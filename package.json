@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "server": "nodemon src/server/index.js",
     "frontend": "node front/server.js",
-    "start": "concurrently \"npm run server\" \"npm run frontend\""
+    "start": "concurrently \"npm run server\" \"npm run frontend\"",
+    "mongo:shell": "mongosh \"mongodb+srv://user:pass@cluster.mongodb.net/\""
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -21,7 +22,8 @@
     "mongodb": "^7.0.0",
     "mongoose": "^8.19.3",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "telnet": "^0.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

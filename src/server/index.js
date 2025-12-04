@@ -17,21 +17,40 @@ dotenv.config();
 const app = express();
 
 // --- 1. conexao com o mongodb (melhorado com async/await) ---
+// const connectDB = async () => {
+//     try {
+//         const DB_URL = process.env.MONGO_URI; // Usando MONGO_URI, um padrão mais comum
+//         if (!DB_URL) {
+//             throw new Error("Variável MONGO_URI não está definida no arquivo .env");
+//         }
+//         console.log("URI sendo usada (parte inicial):", DB_URL.substring(0, 50) + "...");
+//         const conn = await mongoose.connect(DB_URL);
+//         console.log(`✅ MongoDB Conectado: ${conn.connection.host}`);
+//     } catch (error) {
+//         console.error(`❌ Erro ao conectar ao MongoDB: ${error.message}`);
+//         // encerra a aplicacao se o db nao conectar
+//         process.exit(1); 
+//     }
+// };
+// index.js (Bloco connectDB)
+// index.js (Bloco connectDB)
+// index.js (Bloco connectDB)
 const connectDB = async () => {
     try {
-        const DB_URL = process.env.MONGO_URI; // Usando MONGO_URI, um padrão mais comum
-        if (!DB_URL) {
-            throw new Error("Variável MONGO_URI não está definida no arquivo .env");
-        }
-        
-        const conn = await mongoose.connect(DB_URL);
+        const DB_URL = process.env.MONGO_URI; 
+        // ...
+        const conn = await mongoose.connect(DB_URL, {
+            serverSelectionTimeoutMS: 5000, 
+            // ssl: true, <-- REMOVA ESTA OPÇÃO PARA O TESTE
+        });
+
         console.log(`✅ MongoDB Conectado: ${conn.connection.host}`);
     } catch (error) {
         console.error(`❌ Erro ao conectar ao MongoDB: ${error.message}`);
-        // encerra a aplicacao se o db nao conectar
         process.exit(1); 
     }
 };
+
 
 // inicia a conexao
 connectDB(); 

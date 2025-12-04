@@ -1,0 +1,30 @@
+# Arquivos de Sistema
+.DS_Store
+# Ambientes Virtuais Python
+.venv/
+venv/
+# Arquivos de Configuração (Segurança)
+.env
+.env.local
+# Cache de Python
+__pycache__/
+*.pyc
+# Arquivos de Logs/Dados Gerados
+*.log
+
+
+/node_modules
+/npm-debug.log
+/yarn-error.log
+
+Byte-code files
+
+*.csv.zip
+*.log
+/pipeline/logs/
+/pipeline/data_exports/
+
+
+.vscode/
+.DS_Store
+Thumbs.db
