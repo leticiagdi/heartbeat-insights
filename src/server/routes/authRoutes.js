@@ -3,7 +3,7 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import process from 'node:process';
-import User from '../models/UserModel.js';
+import User from '../models/userModel.js';
 
 const router = express.Router();
 
