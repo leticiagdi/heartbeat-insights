@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../api';
 import { InsightsSkeleton } from '../components/SkeletonLoader';
@@ -6,7 +7,9 @@ import '../styles/insights.css';
 
 export function InsightsPage() {
   const { isAdmin } = useAuth();
+  const navigate = useNavigate();
   const [insights, setInsights] = useState([]);
+  const [dashboards, setDashboards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -14,11 +17,13 @@ export function InsightsPage() {
     title: '',
     content: '',
     type: 'info',
-    priority: 'medium'
+    priority: 'medium',
+    dashboardId: ''
   });
 
   useEffect(() => {
     loadInsights();
+    loadDashboards();
   }, []);
 
   const loadInsights = async () => {
@@ -36,6 +41,13 @@ export function InsightsPage() {
     setLoading(false);
   };
 
+  const loadDashboards = async () => {
+    const result = await api.get('/analytics/dashboard');
+    if (result.ok) {
+      setDashboards(result.data.dashboards || []);
+    }
+  };
+
   const handleCreateInsight = async (e) => {
     e.preventDefault();
 
@@ -47,12 +59,17 @@ export function InsightsPage() {
         title: '',
         content: '',
         type: 'info',
-        priority: 'medium'
+        priority: 'medium',
+        dashboardId: ''
       });
       loadInsights();
     } else {
       alert(result.error || 'Erro ao criar insight');
     }
+  };
+
+  const handleGoToDashboard = (dashboardId) => {
+    navigate(`/dashboard?highlight=${dashboardId}`);
   };
 
   if (loading) {
@@ -96,6 +113,17 @@ export function InsightsPage() {
                 <small>
                   Criado em: {new Date(insight.createdAt).toLocaleDateString('pt-BR')}
                 </small>
+                {insight.dashboardId && (
+                  <div className="insight-actions" style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--color-border)' }}>
+                    <button
+                      onClick={() => handleGoToDashboard(insight.dashboardId._id)}
+                      className="btn-secondary"
+                      style={{ fontSize: '0.85rem', padding: '8px 14px' }}
+                    >
+                      📊 Ver Dashboard Relacionado
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -151,6 +179,17 @@ export function InsightsPage() {
                   <option value="medium">Média</option>
                   <option value="high">Alta</option>
                   <option value="urgent">Urgente</option>
+                </select>
+                <select
+                  value={formData.dashboardId}
+                  onChange={(e) =>
+                    setFormData({ ...formData, dashboardId: e.target.value })
+                  }
+                >
+                  <option value="">Nenhum dashboard relacionado</option>
+                  {dashboards.map(d => (
+                    <option key={d._id} value={d._id}>{d.title}</option>
+                  ))}
                 </select>
                 <div className="modal-buttons">
                   <button type="submit" className="btn-primary">

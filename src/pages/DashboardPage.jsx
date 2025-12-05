@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../api';
 import { DashboardSkeleton } from '../components/SkeletonLoader';
@@ -8,12 +9,16 @@ import '../styles/dashboard.css';
 
 export function DashboardPage() {
   const { isAdmin, authToken } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [dashboards, setDashboards] = useState([]);
+  const [insights, setInsights] = useState([]);
   const [temporaryDashboards, setTemporaryDashboards] = useState([]);
+  const [highlightedDashboardId, setHighlightedDashboardId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showChartModal, setShowChartModal] = useState(null);
+  const [showInsightsModal, setShowInsightsModal] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -22,7 +27,30 @@ export function DashboardPage() {
 
   useEffect(() => {
     loadDashboards();
+    loadInsights();
   }, []);
+
+  useEffect(() => {
+    const highlightId = searchParams.get('highlight');
+    if (highlightId && (dashboards.length > 0 || temporaryDashboards.length > 0)) {
+      const dashboard = [...temporaryDashboards, ...dashboards].find(d => d._id === highlightId);
+      if (dashboard) {
+        setHighlightedDashboardId(highlightId);
+
+        setTimeout(() => {
+          const element = document.getElementById(`dashboard-${highlightId}`);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 300);
+
+        setTimeout(() => {
+          setHighlightedDashboardId(null);
+          setSearchParams({});
+        }, 3500);
+      }
+    }
+  }, [searchParams, dashboards, temporaryDashboards]);
 
   const loadDashboards = async () => {
     setLoading(true);
@@ -37,6 +65,17 @@ export function DashboardPage() {
     }
 
     setLoading(false);
+  };
+
+  const loadInsights = async () => {
+    const result = await api.get('/analytics/insights');
+    if (result.ok) {
+      setInsights(result.data.insights || []);
+    }
+  };
+
+  const getRelatedInsights = (dashboardId) => {
+    return insights.filter(insight => insight.dashboardId?._id === dashboardId);
   };
 
   const handleCreateDashboard = async (e) => {
@@ -137,7 +176,11 @@ export function DashboardPage() {
           <>
             <div className="dashboards-list">
               {[...temporaryDashboards, ...dashboards].map((dashboard) => (
-                <div key={dashboard._id} className="dashboard-item">
+                <div
+                  key={dashboard._id}
+                  id={`dashboard-${dashboard._id}`}
+                  className={`dashboard-item ${highlightedDashboardId === dashboard._id ? 'highlighted' : ''}`}
+                >
                   <div className="dashboard-header">
                     <h4>{dashboard.title}</h4>
                     {dashboard.isExternalData && (
@@ -149,29 +192,44 @@ export function DashboardPage() {
                     Criado: {new Date(dashboard.createdAt).toLocaleDateString('pt-BR')}
                   </small>
                   <div className="dashboard-actions">
-                    {dashboard.data && (
-                      <button
-                        onClick={() => setShowChartModal(dashboard)}
-                        className="btn-secondary"
-                      >
-                        📊 Ver Gráfico
-                      </button>
-                    )}
-                    {dashboard.isTemporary ? (
-                      <button
-                        onClick={() => setTemporaryDashboards(prev => prev.filter(d => d._id !== dashboard._id))}
-                        className="btn-danger"
-                      >
-                        Remover
-                      </button>
-                    ) : isAdmin && (
-                      <button
-                        onClick={() => handleDeleteDashboard(dashboard._id)}
-                        className="btn-danger"
-                      >
-                        Excluir
-                      </button>
-                    )}
+                    <div className="dashboard-actions-left">
+                      {dashboard.data && (
+                        <button
+                          onClick={() => setShowChartModal(dashboard)}
+                          className="btn-secondary"
+                        >
+                          📊 Ver Gráfico
+                        </button>
+                      )}
+                      {(() => {
+                        const relatedInsights = getRelatedInsights(dashboard._id);
+                        return relatedInsights.length > 0 && (
+                          <button
+                            onClick={() => setShowInsightsModal({ dashboard, insights: relatedInsights })}
+                            className="btn-outline"
+                          >
+                            💡 Ver {relatedInsights.length} Insight{relatedInsights.length > 1 ? 's' : ''}
+                          </button>
+                        );
+                      })()}
+                    </div>
+                    <div className="dashboard-actions-right">
+                      {dashboard.isTemporary ? (
+                        <button
+                          onClick={() => setTemporaryDashboards(prev => prev.filter(d => d._id !== dashboard._id))}
+                          className="btn-danger"
+                        >
+                          Remover
+                        </button>
+                      ) : isAdmin && (
+                        <button
+                          onClick={() => handleDeleteDashboard(dashboard._id)}
+                          className="btn-danger"
+                        >
+                          Excluir
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -180,10 +238,51 @@ export function DashboardPage() {
         )}
 
         {showChartModal && (
-          <ChartModal 
-            dashboard={showChartModal} 
-            onClose={() => setShowChartModal(null)} 
+          <ChartModal
+            dashboard={showChartModal}
+            onClose={() => setShowChartModal(null)}
           />
+        )}
+
+        {showInsightsModal && (
+          <div className="modal show">
+            <div className="modal-content" style={{ maxWidth: '800px' }}>
+              <span
+                className="close"
+                onClick={() => setShowInsightsModal(null)}
+              >
+                &times;
+              </span>
+              <h3>Insights Relacionados</h3>
+              <p style={{ color: 'var(--color-text-muted)', marginBottom: '20px' }}>
+                Dashboard: <strong>{showInsightsModal.dashboard.title}</strong>
+              </p>
+
+              {showInsightsModal.insights.length === 0 ? (
+                <p>Nenhum insight relacionado.</p>
+              ) : (
+                <div className="insights-modal-list">
+                  {showInsightsModal.insights.map((insight) => (
+                    <div key={insight._id} className="insight-card-compact">
+                      <h4>{insight.title}</h4>
+                      <p>{insight.content}</p>
+                      <div className="insight-meta">
+                        <span className={`insight-type ${insight.type}`}>
+                          {insight.type}
+                        </span>
+                        <span className={`insight-priority ${insight.priority}`}>
+                          {insight.priority}
+                        </span>
+                      </div>
+                      <small style={{ display: 'block', marginTop: '8px', color: 'var(--color-text-muted)' }}>
+                        Criado em: {new Date(insight.createdAt).toLocaleDateString('pt-BR')}
+                      </small>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         )}
 
         {showCreateModal && (
