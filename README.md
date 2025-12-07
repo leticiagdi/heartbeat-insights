@@ -1,6 +1,6 @@
 # Heartbeat Insights
 
-## Tópicos Avançados em Programação III - Desenvolvimento Web
+## Tópicos Especiais III - Desenvolvimento Web - 2025/2
 - Professor: Muriel Franco
 - Alunas: Emilie Kim, Leticia Godoi e Mariana Luisa Gonçalves
 
@@ -66,7 +66,7 @@ React Frontend → API Node.js → MongoDB → APIs Externas
   - `dashboards` - Dashboards cardiovasculares e gráficos personalizados
   - `insights` - Insights médicos e action items
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 heartbeat-insights/
@@ -105,101 +105,9 @@ heartbeat-insights/
 │   ├── App.jsx                  # Componente raiz
 │   └── main.jsx                 # Entry point React
 ├── api/
-│   └── index.js                 
-├── front/                       # Versão HTML legada (não em uso)
+│   └── index.js
 ├── package.json                 # Dependências e scripts
 └── README.md                    # Documentação
-```
-
-## 📊 Modelos de Dados
-
-### 👤 **User Model** (`userModel.js`)
-Gerencia autenticação e controle de acesso:
-
-```javascript
-{
-  _id: ObjectId("6921fefa4dfeb613873e35dd"),
-  name: "Dr. João Silva",
-  email: "joao.silva@hospital.com",
-  password: "$2a$10$...", // bcrypt hash
-  role: "admin", // 'user' ou 'admin'
-  createdAt: "2025-11-22T18:45:30.123Z",
-  updatedAt: "2025-11-22T18:45:30.123Z"
-}
-```
-
-### 🫀 **Dashboard Model** (`dashboardModel.js`)
-Armazena dashboards cardiovasculares e gráficos personalizados:
-
-```javascript
-{
-  _id: ObjectId("692206fbea8f2670e7d4d053"),
-  title: "Análise de Comorbidades",
-  description: "Distribuição de comorbidades por faixa etária",
-  
-  // dados cardiovasculares estruturados (para gráficos pré-definidos)
-  cardiovascularData: {
-    totalPatients: 1250,
-    ageGroups: { under30: 320, between30_50: 580, above50: 350 },
-    conditions: { 
-      hypertension: 450, diabetes: 280, heartDisease: 150,
-      stroke: 85, obesity: 520 
-    },
-    riskFactors: { 
-      smoking: 380, sedentary: 680, highCholesterol: 290,
-      familyHistory: 210 
-    },
-    monthlyTrends: [
-      { month: "Janeiro", newCases: 45, recoveries: 38 },
-      { month: "Fevereiro", newCases: 52, recoveries: 41 }
-    ]
-  },
-  
-  // dados personalizados (para gráficos customizados)
-  data: {
-    chartType: "pie",
-    labels: ["Hipertensão", "Arritmia", "Saudáveis"],
-    values: [450, 280, 520]
-  },
-  
-  isActive: true,
-  createdBy: ObjectId("6921fefa4dfeb613873e35dd"),
-  createdAt: "2025-11-22T18:54:51.121Z",
-  updatedAt: "2025-11-22T18:54:51.121Z"
-}
-```
-
-### 💡 **Insight Model** (`insightModel.js`)  
-Gerencia insights médicos e action items:
-
-```javascript
-{
-  _id: ObjectId("69220845ea8f2670e7d4d060"),
-  title: "Aumento de Hipertensão em Jovens",
-  content: "Observado crescimento de 15% nos casos de hipertensão em pacientes entre 25-35 anos",
-  type: "warning", // 'action', 'warning', 'info', 'success', 'prevention', 'medical'
-  priority: "high", // 'low', 'medium', 'high', 'urgent', 'critical'
-  
-  medicalData: {
-    condition: "hypertension",
-    affectedGroup: "Adultos jovens (25-35 anos)",
-    percentage: 15.3,
-    trend: "increasing"
-  },
-  
-  actionItems: [
-    {
-      action: "Implementar programa de prevenção cardiovascular",
-      deadline: "2025-12-31T00:00:00.000Z",
-      responsible: "Equipe de Cardiologia",
-      status: "pending"
-    }
-  ],
-  
-  isActive: true,
-  createdBy: ObjectId("6921fefa4dfeb613873e35dd"),
-  createdAt: "2025-11-22T19:02:15.456Z"
-}
 ```
 
 ## 🛣️ Rotas da API
@@ -239,7 +147,7 @@ GET    /api/analytics/health-advice    # Buscar conselho aleatório (Advice Slip
 ## 🚀 Instalação e Configuração
 
 ### Pré-requisitos
-- Node.js 18+ 
+- Node.js 20+ 
 - MongoDB 6+
 - NPM ou Yarn
 - Conta MongoDB Atlas
@@ -298,7 +206,7 @@ npm run build
 # Gera pasta dist/ com arquivos otimizados
 ```
 
-## 🧪 Exemplos Práticos de Uso
+## Exemplos Práticos de Uso
 
 ### **Criando um Usuário**
 ```bash
@@ -390,10 +298,4 @@ curl -X POST http://localhost:5001/api/analytics/insights \
 - **Dados Médicos**: Informações específicas sobre condições
 - **Responsabilidades**: Atribuição de tarefas para equipes
 
-### **Validação JSON Inteligente**
-- **Validação em Tempo Real**: Feedback visual instantâneo durante digitação
-- **Placeholder Educativo**: Exemplos práticos e lista de erros comuns
-- **Feedback Visual**: Bordas coloridas (verde=válido, vermelho=inválido)
-- **Tooltips Específicos**: Mensagens contextuais baseadas no tipo de erro
-- **Prevenção de Erros**: Detecta aspas simples, vírgulas extras, chaves não fechadas
 </div>
