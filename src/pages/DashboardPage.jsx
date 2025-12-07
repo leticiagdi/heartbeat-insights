@@ -122,19 +122,6 @@ export function DashboardPage() {
     });
   };
 
-  const handleGenerateHealthDashboards = async () => {
-    if (!confirm('Isso vai gerar 5 dashboards TEMPORÁRIOS com dados REAIS. Continuar?')) return;
-
-    const result = await api.post('/analytics/generate-health-dashboards');
-
-    if (result.ok) {
-      setTemporaryDashboards(result.data.dashboards);
-      alert(`✅ ${result.data.dashboards.length} dashboards temporários gerados! (Não salvos no banco)`);
-    } else {
-      alert(result.error || 'Erro ao gerar dashboards');
-    }
-  };
-
   if (loading) {
     return <DashboardSkeleton />;
   }
@@ -151,13 +138,6 @@ export function DashboardPage() {
               className="btn-primary"
             >
               + Criar Dashboard
-            </button>
-            <button
-              onClick={handleGenerateHealthDashboards}
-              className="btn-secondary"
-              style={{ marginLeft: '10px' }}
-            >
-              🌍 Gerar Dashboards API Real
             </button>
           </div>
         )}
