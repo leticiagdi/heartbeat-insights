@@ -1,44 +1,49 @@
-# 💓 Heartbeat Insights
+# Heartbeat Insights
 
+## Tópicos Avançados em Programação III - Desenvolvimento Web
+- Professor: Muriel Franco
+- Alunas: Emilie Kim, Leticia Godoi e Mariana Luisa Gonçalves
+
+## Visão Geral
 > Plataforma completa para análises cardiovasculares com dashboards interativos, insights médicos e visualizações personalizadas.
 
-## 🎯 Visão Geral
+O **Heartbeat Insights** é uma aplicação web moderna que permite profissionais de saúde criar, gerenciar e visualizar dashboards cardiovasculares personalizados. A plataforma combina um backend robusto em Node.js com um frontend React, oferecendo visualizações de dados através de gráficos interativos e um sistema completo de gerenciamento de insights médicos.
 
-O **Heartbeat Insights** é uma aplicação web moderna que permite profissionais de saúde criar, gerenciar e visualizar dashboards cardiovasculares personalizados. A plataforma oferece tanto gráficos pré-definidos para análises padrão quanto ferramentas para criação de visualizações completamente customizadas.
-
-## 🏗️ Arquitetura da Aplicação
+## Arquitetura da Aplicação
 
 ```
-🫀 Dados Cardiovasculares → 📊 API Node.js → 💾 MongoDB → 🎨 Frontend Dinâmico
+React Frontend → API Node.js → MongoDB → APIs Externas
 ```
 
-### 🚀 **Backend Node.js**
+### **Backend Node.js**
 - API REST completa com autenticação JWT
 - Gerenciamento de usuários com controle de acesso (user/admin)
 - CRUD completo para dashboards e insights
-- Estrutura modular com routes e models separados
+- Integração com API externa (Advice Slip API)
+- Estrutura modular: routes, models, services
 
-### 📊 **Banco MongoDB**
+### **Banco de Dados (MongoDB)**
 - **3 Collections principais**: Users, Dashboards, Insights
 - **Dados Estruturados**: Esquemas específicos para cada tipo de informação
 - **Flexibilidade**: Suporte a dados JSON customizados
 
-### ⚡ **Frontend Interativo**
-- Interface HTML/CSS/JavaScript pura
-- Chart.js para visualizações dinâmicas
-- Modais para criação de conteúdo
-- Dashboards personalizados com containers separados
+### **Frontend**
+- Single Page Application (SPA) com React Router
+- Autenticação com Context API e localStorage
+- Visualizações com Chart.js
+- Suporte a 5 tipos de gráficos
+- Design responsivo com CSS moderno
 
-## ✨ Funcionalidades Principais
+## Funcionalidades Principais
 
-- **🎨 Criação de Gráficos**: Interface visual intuitiva para gráficos personalizados
-- **📝 Dashboards JSON**: Entrada manual de dados complexos para usuários técnicos
-- **🫀 Análises Cardiovasculares**: Gráficos pré-definidos (faixa etária, condições, fatores de risco)
-- **💡 Sistema de Insights**: Criação e gerenciamento de ações médicas
-- **🔐 Controle de Acesso**: Usuários e administradores com permissões diferentes
-- **📱 Interface Responsiva**: Funciona perfeitamente em desktop e dispositivos móveis
+- **Dashboards Customizados**: Criação de gráficos via JSON (pie, bar, line, doughnut, scatter)
+- **Sistema de Insights**: Insights médicos com prioridades e vinculação a dashboards
+- **Relacionamentos**: Navegação entre insights e dashboards relacionados
+- **Autenticação Completa**: Login/Registro com JWT e controle de acesso por roles
+- **Gerenciamento de Usuários**: Admins podem criar, editar e excluir usuários
+- **Conselhos de Saúde**: Integração com API externa para conselhos motivacionais
 
-## 🛠️ Stack Tecnológica
+## Stack
 
 ### Backend
 - **Node.js 18+** + **Express.js** - API REST moderna
@@ -49,13 +54,13 @@ O **Heartbeat Insights** é uma aplicação web moderna que permite profissionai
 - **ES Modules** - Padrão JavaScript moderno
 
 ### Frontend
-- **HTML5** + **CSS3** - Estrutura e estilização
-- **JavaScript Vanilla** - Lógica e interatividade
-- **Chart.js** - Gráficos dinâmicos e responsivos
-- **CSS Grid/Flexbox** - Layout moderno
-- **Modals** - Interface de usuário intuitiva
+- **React 19** - Biblioteca UI moderna
+- **React Router DOM 6** - Navegação SPA
+- **Vite 7** - Build tool rápido e otimizado
+- **Chart.js** - Gráficos interativos
+- **Context API** - Gerenciamento de estado global
 
-### Banco de Dados
+### Banco de Dados (MongoDB)
 - **3 Collections Principais**:
   - `users` - Gerenciamento de usuários e autenticação
   - `dashboards` - Dashboards cardiovasculares e gráficos personalizados
@@ -65,21 +70,43 @@ O **Heartbeat Insights** é uma aplicação web moderna que permite profissionai
 
 ```
 heartbeat-insights/
-├── src/server/
-│   ├── models/
-│   │   ├── userModel.js         # Schema de usuários (user/admin)
-│   │   ├── dashboardModel.js    # Schema de dashboards cardiovasculares
-│   │   └── insightModel.js      # Schema de insights médicos
-│   ├── routes/
-│   │   ├── authRoutes.js        # Rotas de autenticação
-│   │   └── analyticsRoutes.js   # Rotas de dashboards e insights
-│   └── index.js                 # Servidor Express principal
-├── front/
-│   ├── index.html               # Interface principal
-│   ├── script.js                # Lógica da aplicação
-│   ├── custom-charts.js         # Criação de gráficos personalizados
-│   └── style.css                # Estilização da interface
-├── public/                      # Arquivos estáticos
+├── src/
+│   ├── components/              # Componentes React reutilizáveis
+│   │   ├── AppLayout.jsx        # Layout principal com header
+│   │   ├── ChartModal.jsx       # Modal para exibir gráficos
+│   │   ├── Navigation.jsx       # Menu de navegação
+│   │   └── SkeletonLoader.jsx   # Esqueleto para loading
+│   ├── contexts/
+│   │   └── AuthContext.jsx      # Context API para autenticação
+│   ├── pages/                   # Páginas da aplicação
+│   │   ├── DashboardPage.jsx    # Listagem e criação de dashboards
+│   │   ├── InsightsPage.jsx     # Gerenciamento de insights
+│   │   ├── UsersPage.jsx        # Administração de usuários (admin)
+│   │   └── LoginPage.jsx        # Autenticação
+│   ├── server/                  # Backend Node.js
+│   │   ├── models/
+│   │   │   ├── userModel.js     # Schema de usuários
+│   │   │   ├── dashboardModel.js # Schema de dashboards
+│   │   │   └── insightModel.js  # Schema de insights
+│   │   ├── routes/
+│   │   │   ├── authRoutes.js    # Autenticação e usuários
+│   │   │   └── analyticsRoutes.js # Dashboards e insights
+│   │   ├── services/
+│   │   │   └── adviceService.js # Integração Advice Slip API
+│   │   └── index.js             # Servidor Express
+│   ├── styles/                  # CSS modularizado
+│   │   ├── global.css           # Estilos globais e variáveis
+│   │   ├── modal.css            # Estilos compartilhados de modais
+│   │   ├── dashboard.css        # Estilos de dashboards
+│   │   └── ...
+│   ├── utils/
+│   │   └── chartExamples.js     # Templates de gráficos
+│   ├── api.js                   # Helper centralizado de API
+│   ├── App.jsx                  # Componente raiz
+│   └── main.jsx                 # Entry point React
+├── api/
+│   └── index.js                 
+├── front/                       # Versão HTML legada (não em uso)
 ├── package.json                 # Dependências e scripts
 └── README.md                    # Documentação
 ```
@@ -179,24 +206,34 @@ Gerencia insights médicos e action items:
 
 ### **Autenticação** (`authRoutes.js`)
 ```http
-POST /api/auth/register  # Criar novo usuário
-POST /api/auth/login     # Autenticar usuário
+POST /api/auth/register           # Criar novo usuário
+POST /api/auth/login              # Autenticar usuário (retorna JWT)
+GET    /api/auth/users              # Listar usuários (admin only)
+PUT    /api/auth/users/:id          # Editar usuário (admin only)
+DELETE /api/auth/users/:id          # Excluir usuário (admin only)
 ```
 
-### **Analytics** (`analyticsRoutes.js`)
+### **Dashboards** (`analyticsRoutes.js`)
 ```http
-# Dashboards
-GET    /api/analytics/dashboards        # Listar todos os dashboards
-POST   /api/analytics/dashboard         # Criar novo dashboard
-GET    /api/analytics/dashboard/:id     # Buscar dashboard específico
-PUT    /api/analytics/dashboard/:id     # Atualizar dashboard
-DELETE /api/analytics/dashboard/:id     # Excluir dashboard
+GET    /api/analytics/dashboard        # Listar todos os dashboards
+POST   /api/analytics/dashboard        # Criar dashboard (admin only)
+GET    /api/analytics/dashboard/:id    # Buscar dashboard específico
+PUT    /api/analytics/dashboard/:id    # Atualizar dashboard (admin only)
+DELETE /api/analytics/dashboard/:id    # Excluir dashboard (admin only)
+POST   /api/analytics/generate-sample-dashboard  # Gerar dados de exemplo
+```
 
-# Insights
-GET    /api/analytics/insights          # Listar insights
-POST   /api/analytics/insights          # Criar insight (admin)
-PUT    /api/analytics/insights/:id      # Atualizar insight (admin)
-DELETE /api/analytics/insights/:id      # Excluir insight (admin)
+### **Insights** (`analyticsRoutes.js`)
+```http
+GET    /api/analytics/insights         # Listar todos os insights
+POST   /api/analytics/insights         # Criar insight (admin only)
+PUT    /api/analytics/insights/:id     # Atualizar insight (admin only)
+DELETE /api/analytics/insights/:id     # Excluir insight (admin only)
+```
+
+### **Serviços Externos** (`analyticsRoutes.js`)
+```http
+GET    /api/analytics/health-advice    # Buscar conselho aleatório (Advice Slip API)
 ```
 
 ## 🚀 Instalação e Configuração
@@ -205,10 +242,11 @@ DELETE /api/analytics/insights/:id      # Excluir insight (admin)
 - Node.js 18+ 
 - MongoDB 6+
 - NPM ou Yarn
+- Conta MongoDB Atlas
 
 ### 1. Clone o repositório
 ```bash
-git clone https://github.com/seu-usuario/heartbeat-insights.git
+git clone https://github.com/leticiagdi/heartbeat-insights.git
 cd heartbeat-insights
 ```
 
@@ -218,58 +256,66 @@ npm install
 ```
 
 ### 3. Configure as variáveis de ambiente
-Crie um arquivo `.env` na raiz do projeto:
+Crie um arquivo `.env` na raiz do projeto (use `.env.example` como base):
 ```env
-# Database
-MONGO_URI=mongodb://localhost:27017/heartbeat-insights
-
-# Server  
-PORT=5000
+# MongoDB Atlas
+MONGO_URI=mongodb+srv://usuario:senha@cluster.mongodb.net/heartbeat-insights
 
 # JWT
-JWT_SECRET=seu_jwt_secret_super_seguro_aqui
+JWT_SECRET=sua_chave_super_secreta_aqui_minimo_32_caracteres
 
-# CORS
-CLIENT_URL=http://localhost:3000
+# Server
+PORT=5001
+NODE_ENV=development
 ```
 
-### 4. Inicie os serviços
+⚠️ **IMPORTANTE:** O `JWT_SECRET` é obrigatório. O sistema não inicializa sem ele.
 
-#### Backend
+### 4. Inicie a aplicação
+
+#### Desenvolvimento (Frontend + Backend juntos)
 ```bash
-npm run start       # Servidor completo
-# ou
-npm run server      # Apenas API
+npm start
+# Frontend: http://localhost:5173
+# Backend: http://localhost:5001
 ```
 
-#### Frontend
-Abra o `front/index.html` em seu navegador ou use um servidor local:
+#### Apenas Backend
 ```bash
-# Usando Python (se disponível)
-cd front
-python -m http.server 3000
+npm run server
+# API: http://localhost:5001
+```
 
-# Usando Node.js (serve)
-npx serve front -p 3000
+#### Apenas Frontend (React)
+```bash
+npm run dev
+# Vite dev server: http://localhost:5173
+```
+
+#### Build para produção
+```bash
+npm run build
+# Gera pasta dist/ com arquivos otimizados
 ```
 
 ## 🧪 Exemplos Práticos de Uso
 
-### **Criando um Usuário Administrador**
+### **Criando um Usuário**
 ```bash
-curl -X POST http://localhost:5000/api/auth/register \
+curl -X POST http://localhost:5001/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Dr. João Silva",
-    "email": "joao.silva@hospital.com", 
-    "password": "senha123",
-    "role": "admin"
+    "email": "joao.silva@hospital.com",
+    "password": "senha123"
   }'
+# Nota: Sempre cria como role: 'user' por segurança
+# Admins podem promover usuários via PUT /api/auth/users/:id
 ```
 
 ### **Fazendo Login**
 ```bash
-curl -X POST http://localhost:5000/api/auth/login \
+curl -X POST http://localhost:5001/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "joao.silva@hospital.com",
@@ -278,80 +324,41 @@ curl -X POST http://localhost:5000/api/auth/login \
 
 # Resposta:
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "id": "6921fefa4dfeb613873e35dd",
-    "name": "Dr. João Silva",
-    "email": "joao.silva@hospital.com",
-    "role": "admin"
-  }
+  "_id": "6921fefa4dfeb613873e35dd",
+  "name": "Dr. João Silva",
+  "email": "joao.silva@hospital.com",
+  "role": "user",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
-### **Criando Dashboard com Dados Cardiovasculares**
+### **Criando Dashboard com Gráfico**
 ```bash
-curl -X POST http://localhost:5000/api/analytics/dashboard \
+curl -X POST http://localhost:5001/api/analytics/dashboard \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -d '{
-    "title": "Óbitos por Cidade",
-    "description": "Análise de mortalidade cardiovascular por região",
-    "cardiovascularData": {
-      "totalPatients": 1250,
-      "ageGroups": {
-        "under30": 320,
-        "between30_50": 580, 
-        "above50": 350
-      },
-      "conditions": {
-        "hypertension": 450,
-        "diabetes": 280,
-        "heartDisease": 150,
-        "stroke": 85,
-        "obesity": 520
-      }
-    }
-  }'
-```
-
-### **Criando Gráfico Personalizado**
-```bash
-curl -X POST http://localhost:5000/api/analytics/dashboard \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
-  -d '{
-    "title": "Análise de Comorbidades",
-    "description": "Distribuição de comorbidades por tipo",
+    "title": "Distribuição de Pacientes por Idade",
+    "description": "Análise demográfica dos pacientes cardiovasculares",
     "data": {
       "chartType": "pie",
-      "labels": ["Hipertensão", "Arritmia", "Saudáveis"],
-      "values": [450, 280, 520]
+      "title": "Faixas Etárias",
+      "labels": ["18-30", "31-50", "51-70", "70+"],
+      "values": [120, 340, 450, 90]
     }
   }'
 ```
 
-### **Dashboard JSON com Validação**
-Na interface web, o campo JSON possui validação inteligente:
+**Tipos de gráfico suportados:**
+- `pie` - Gráfico de pizza
+- `doughnut` - Gráfico de rosca
+- `bar` - Gráfico de barras
+- `line` - Gráfico de linha
+- `scatter` - Gráfico de dispersão (com grupos)
 
-```json
-// ✅ JSON Válido (borda verde)
-{
-  "hipertensos": 320,
-  "diabeticos": 180,
-  "obesos": 250,
-  "total": 750
-}
-
-// ❌ Erros Comuns Detectados (borda vermelha + tooltip)
-{hipertensos: 320}           → "Erro: Use aspas duplas"
-{"hipertensos": 320,}        → "Erro: Vírgula extra no final"
-{'campo': 123}               → "Erro: Use aspas duplas (\") não simples (')"
-{"campo": valor}             → "Erro: Valores string precisam de aspas"
-```
-
-### **Criando Insight Médico**
+### **Criando Insight Médico (com dashboard relacionado)**
 ```bash
-curl -X POST http://localhost:5000/api/analytics/insights \
+curl -X POST http://localhost:5001/api/analytics/insights \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -d '{
@@ -359,16 +366,14 @@ curl -X POST http://localhost:5000/api/analytics/insights \
     "content": "Observado crescimento de 15% nos casos de hipertensão em pacientes entre 25-35 anos",
     "type": "warning",
     "priority": "high",
-    "medicalData": {
-      "condition": "hypertension",
-      "affectedGroup": "Adultos jovens (25-35 anos)",
-      "percentage": 15.3,
-      "trend": "increasing"
-    }
+    "dashboardId": "692206fbea8f2670e7d4d053"
   }'
 ```
 
-## 🎯 Funcionalidades da Interface
+**Tipos de insight:** `info`, `action`, `warning`, `success`
+**Prioridades:** `low`, `medium`, `high`, `urgent`
+
+## Funcionalidades da Interface
 
 ### **Dashboard Principal**
 - **Visualização em Tempo Real**: Gráficos atualizados dinamicamente
@@ -376,128 +381,19 @@ curl -X POST http://localhost:5000/api/analytics/insights \
 - **Navegação Intuitiva**: Seções organizadas (Dashboard, Insights)
 
 ### **Criação de Gráficos**
-- **🎨 Interface Visual**: Criação intuitiva com preview em tempo real
-- **📊 Tipos Suportados**: Pizza, Barras, Linha, Rosquinha
-- **📝 Entrada JSON**: Para dados complexos e estruturas customizadas
-- **🔄 Edição Dinâmica**: Adicionar/remover pontos de dados facilmente
+- **Interface Visual**: Criação intuitiva com preview em tempo real
+- **Tipos Suportados**: Pizza, Barras, Linha, Rosquinha
+- **Entrada JSON**: Para dados complexos e estruturas customizadas
 
 ### **Sistema de Insights**
-- **💡 Action Items**: Insights com prioridades e prazos
-- **⚕️ Dados Médicos**: Informações específicas sobre condições
-- **📈 Tendências**: Monitoramento de crescimento/declínio
-- **👥 Responsabilidades**: Atribuição de tarefas para equipes
+- **Action Items**: Insights com prioridades e prazos
+- **Dados Médicos**: Informações específicas sobre condições
+- **Responsabilidades**: Atribuição de tarefas para equipes
 
 ### **Validação JSON Inteligente**
-- **🔍 Validação em Tempo Real**: Feedback visual instantâneo durante digitação
-- **💡 Placeholder Educativo**: Exemplos práticos e lista de erros comuns
-- **🎨 Feedback Visual**: Bordas coloridas (verde=válido, vermelho=inválido)
-- **📋 Tooltips Específicos**: Mensagens contextuais baseadas no tipo de erro
-- **⚡ Prevenção de Erros**: Detecta aspas simples, vírgulas extras, chaves não fechadas
-
-## 🎯 Vantagens da Arquitetura Atual
-
-### ⚡ **Performance Otimizada**
-- **Frontend Leve**: JavaScript vanilla sem frameworks pesados
-- **Carregamento Instantâneo**: Dados estruturados no MongoDB
-- **Separação de Containers**: Evita conflitos entre visualizações
-- **Chart.js**: Renderização eficiente de gráficos
-
-### 🔧 **Flexibilidade de Dados**
-- **Dual Structure**: Dados cardiovasculares estruturados + JSON livre
-- **Compatibilidade**: Suporte a dashboards legados e novos formatos  
-- **Escalabilidade**: Fácil adição de novos tipos de gráfico
-- **API Restful**: Integração simples com sistemas externos
-
-### 🛡️ **Segurança e Controle**
-- **JWT Robusto**: Tokens seguros com expiração
-- **Roles Diferenciados**: Usuários vs Administradores
-- **CORS Configurado**: Controle de acesso entre domínios
-- **Validação de Dados**: Mongoose schemas com validação
-
-### 🧩 **Manutenibilidade**
-- **Código Modular**: Models, Routes e Controllers separados
-- **ES Modules**: Padrão JavaScript moderno
-- **Comentários Padronizados**: Documentação inline consistente
-- **Estrutura Clara**: Arquivos organizados por funcionalidade
-
-### 🔍 **Validação JSON Avançada**
-- **Parser em Tempo Real**: `JSON.parse()` com try/catch inteligente
-- **Detecção de Padrões**: Identifica erros comuns (aspas, vírgulas, chaves)
-- **Feedback Visual CSS**: Classes `.json-valid` e `.json-invalid`
-- **Tooltips Contextuais**: Mensagens específicas baseadas no erro
-- **UX Melhorada**: Reduz drasticamente erros de sintaxe JSON
-
-## 🚦 Status Atual do Projeto
-
-### ✅ **Completamente Funcionais**
-- ✅ **API Backend**: Todas as rotas implementadas e testadas
-- ✅ **Autenticação**: Sistema JWT completo com roles
-- ✅ **Modelos de Dados**: Schemas otimizados para performance
-- ✅ **Interface Web**: Frontend responsivo e intuitivo
-- ✅ **Gráficos Dinâmicos**: Chart.js integrado e funcionando
-- ✅ **CRUD Completo**: Dashboards e Insights totalmente gerenciáveis
-- ✅ **Separação de Containers**: Visualizações organizadas
-- ✅ **Validação JSON**: Sistema inteligente com feedback em tempo real
-
-### 🔄 **Em Uso - Dados Reais**
-```javascript
-// Dashboards já cadastrados no sistema:
-{
-  "_id": "692206fbea8f2670e7d4d053",
-  "title": "Análise de Comorbidades", 
-  "description": "Descriçao",
-  "createdBy": "6921fefa4dfeb613873e35dd"
-},
-{
-  "_id": "69220737ea8f2670e7d4d059",
-  "title": "Óbitos por cidade",
-  "description": "Descriçao", 
-  "createdBy": "6921fefa4dfeb613873e35dd"
-}
-```
-
-## 📈 Roadmap Futuro
-
-### 🎯 **Melhorias Planejadas**
-- **📊 Mais Tipos de Gráfico**: Scatter, Radar, Gauge
-- **🔄 Sync em Tempo Real**: WebSockets para atualizações live
-- **📱 App Mobile**: Progressive Web App (PWA)
-- **🤖 Integração ML**: APIs para modelos preditivos
-- **📋 Relatórios**: Geração automática de PDFs
-- **🌐 Multi-idioma**: Internacionalização
-
-## 🤝 Contribuindo
-
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 👥 Equipe
-
-- **Desenvolvedor Principal** - [Seu Nome](https://github.com/seu-usuario)
-- **Arquitetura e ML** - Especialista em análise de dados cardiovasculares
-
-## 📞 Contato
-
-- 📧 Email: seu.email@exemplo.com
-- 🐙 GitHub: [@seu-usuario](https://github.com/seu-usuario)
-- 💼 LinkedIn: [Seu Nome](https://linkedin.com/in/seu-perfil)
-
----
-
-<div align="center">
-
-**💓 Heartbeat Insights - Transformando dados em saúde**
-
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-6+-brightgreen.svg)](https://mongodb.com/)
-[![React](https://img.shields.io/badge/React-19-blue.svg)](https://reactjs.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
+- **Validação em Tempo Real**: Feedback visual instantâneo durante digitação
+- **Placeholder Educativo**: Exemplos práticos e lista de erros comuns
+- **Feedback Visual**: Bordas coloridas (verde=válido, vermelho=inválido)
+- **Tooltips Específicos**: Mensagens contextuais baseadas no tipo de erro
+- **Prevenção de Erros**: Detecta aspas simples, vírgulas extras, chaves não fechadas
 </div>

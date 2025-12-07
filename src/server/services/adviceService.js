@@ -1,12 +1,12 @@
 const ADVICE_API_BASE = 'https://api.adviceslip.com';
 
-const healthTerms = ['health', 'heart', 'life', 'care', 'wellness', 'body', 'mind'];
+const healthTerms = ['health', 'heart', 'body', 'wellness', 'fitness', 'nutrition', 'exercise', 'stress'];
 
 export const getHealthAdvice = async () => {
   try {
     // busca usando uma palavra aleatória da lista
     const randomTerm = healthTerms[Math.floor(Math.random() * healthTerms.length)];
-    
+
     const response = await fetch(`${ADVICE_API_BASE}/advice/search/${randomTerm}`);
     const data = await response.json();
 
